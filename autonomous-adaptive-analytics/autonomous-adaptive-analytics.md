@@ -40,7 +40,7 @@ Watch the agent explore data, write code, handle errors, and deliver production-
 
 > ### 📓 **Try It Yourself**
 >
-> We've published a [**Jupyter notebook**](https://github.com/yess-ai/blogs/blob/main/autonomous-adaptive-analytics/Classification_Comparison_Demo.ipynb) that demonstrates this autonomous analysis system with configurable ML methods.
+> We've published a [**Jupyter notebook**](https://github.com/yess-ai/yess-blogs/blob/main/autonomous-adaptive-analytics/Classification_Comparison_Demo.ipynb) that demonstrates this autonomous analysis system with configurable ML methods.
 >
 > **🔧 Choose Your Classification Method:**
 > ```python
@@ -89,7 +89,7 @@ Every decision is logged with rationale; runs are bounded by policy (steps/time/
 | 🤖 **[Claude Code SDK](https://docs.claude.com/en/api/agent-sdk/overview)** | Autonomous coding agent | SDK/Library | • Read/Write/Edit/Bash/Glob/Grep tools<br>• Closed-loop pattern (detect, decide, act, evaluate)<br>• Structured logging & runnable code generation |
 | 📤 **Data Transfer** | Secure file handling | Function | • Direct upload via `sandbox.fs.upload_file()`<br>• No embedded credentials or persistent storage<br>• API keys injected as environment variables |
 | 📥 **Result Extraction** | Output management | Function | • Direct filesystem download<br>• Categorized by type for clean handoff |
-| 🔑 **API Keys Required** | Authentication | Registration required | • [Anthropic API key](https://console.anthropic.com/) for Claude Code<br>• [Daytona API key](https://app.daytona.io/) for sandbox access<br>• Insert both in the [Jupyter notebook](https://github.com/yess-ai/blogs/blob/main/autonomous-adaptive-analytics/Classification_Comparison_Demo.ipynb) placeholders |
+| 🔑 **API Keys Required** | Authentication | Registration required | • [Anthropic API key](https://console.anthropic.com/) for Claude Code<br>• [Daytona API key](https://app.daytona.io/) for sandbox access<br>• Insert both in the [Jupyter notebook](https://github.com/yess-ai/yess-blogs/blob/main/autonomous-adaptive-analytics/Classification_Comparison_Demo.ipynb) placeholders |
 
 ---
 
