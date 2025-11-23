@@ -1,0 +1,198 @@
+<svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="720" fill="#fafbfc"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" font-size="24" font-weight="600" text-anchor="middle" fill="#2d3748">
+    Agent Architecture with Artifacts MCP
+  </text>
+
+  <!-- Agent (Left) - Indigo/Blue -->
+  <g id="agent">
+    <text x="200" y="90" font-size="16" font-weight="500" text-anchor="middle" fill="#4a5568">
+      AI Agent
+    </text>
+    <rect x="100" y="110" width="200" height="420" rx="16" fill="#5a67d8" stroke="#4c51bf" stroke-width="2.5"/>
+    
+    <!-- Brain/AI icon -->
+    <g transform="translate(150, 240)">
+      <ellipse cx="50" cy="40" rx="45" ry="50" fill="#edf2f7" stroke="#4c51bf" stroke-width="2"/>
+      <!-- Brain-like curves -->
+      <path d="M 30 20 Q 40 25 50 20 Q 60 25 70 20" fill="none" stroke="#667eea" stroke-width="2.5"/>
+      <path d="M 25 35 Q 35 40 45 35 Q 55 40 65 35" fill="none" stroke="#667eea" stroke-width="2.5"/>
+      <path d="M 30 50 Q 40 55 50 50 Q 60 55 70 50" fill="none" stroke="#667eea" stroke-width="2.5"/>
+      <path d="M 35 65 Q 50 68 65 65" fill="none" stroke="#667eea" stroke-width="2.5"/>
+    </g>
+    
+    <text x="200" y="360" font-size="13" text-anchor="middle" fill="#e6fffa" font-weight="600">
+      Reasoning Engine
+    </text>
+  </g>
+
+  <!-- Context Window (Middle) - Teal/Turquoise -->
+  <g id="context">
+    <text x="600" y="90" font-size="16" font-weight="500" text-anchor="middle" fill="#4a5568">
+      Agent Context
+    </text>
+    <rect x="360" y="110" width="480" height="420" rx="16" fill="#38b2ac" stroke="#319795" stroke-width="2.5"/>
+    
+    <!-- Inner context box -->
+    <rect x="385" y="140" width="430" height="370" rx="12" fill="#ffffff" stroke="#4fd1c5" stroke-width="2"/>
+    
+    <!-- Section header -->
+    <text x="600" y="170" font-size="14" font-weight="600" text-anchor="middle" fill="#234e52">
+      Lightweight Context (~5-20K tokens)
+    </text>
+    
+    <!-- Items with harmonious colors -->
+    <g id="context-items">
+      <!-- Instructions -->
+      <rect x="405" y="190" width="390" height="40" rx="6" fill="#c6f6d5" stroke="#48bb78" stroke-width="1.5"/>
+      <text x="420" y="210" font-size="12" fill="#22543d" font-weight="600">System Instructions</text>
+      <text x="420" y="225" font-size="11" fill="#2f855a">Agent role, task definitions, guidelines</text>
+      
+      <!-- Tool schemas -->
+      <rect x="405" y="240" width="390" height="40" rx="6" fill="#fef5e7" stroke="#ecc94b" stroke-width="1.5"/>
+      <text x="420" y="260" font-size="12" fill="#744210" font-weight="600">Tool Schemas</text>
+      <text x="420" y="275" font-size="11" fill="#975a16">create_artifact(), get_artifact_content()</text>
+      
+      <!-- User query -->
+      <rect x="405" y="290" width="390" height="40" rx="6" fill="#bee3f8" stroke="#4299e1" stroke-width="1.5"/>
+      <text x="420" y="310" font-size="12" fill="#2c5282" font-weight="600">User Query</text>
+      <text x="420" y="325" font-size="11" fill="#2b6cb0">"Store and analyze 50,000 lead records"</text>
+      
+      <!-- Samples -->
+      <rect x="405" y="340" width="390" height="55" rx="6" fill="#feebc8" stroke="#ed8936" stroke-width="1.5"/>
+      <text x="420" y="360" font-size="12" fill="#7c2d12" font-weight="600">Sample Data (5-10 records)</text>
+      <text x="420" y="375" font-size="10" fill="#9c4221" font-family="monospace">{"name": "Acme", "score": 85}</text>
+      <text x="420" y="388" font-size="10" fill="#9c4221" font-family="monospace">{"name": "TechCo", "score": 42} ...</text>
+      
+      <!-- Artifact references -->
+      <rect x="405" y="405" width="390" height="40" rx="6" fill="#e9d8fd" stroke="#9f7aea" stroke-width="1.5"/>
+      <text x="420" y="425" font-size="12" fill="#44337a" font-weight="600">Artifact Reference</text>
+      <text x="420" y="440" font-size="10" fill="#553c9a" font-family="monospace">artifact_id: "a1b2c3-..."</text>
+      
+      <!-- Metadata -->
+      <rect x="405" y="455" width="390" height="40" rx="6" fill="#b2f5ea" stroke="#38b2ac" stroke-width="1.5"/>
+      <text x="420" y="475" font-size="12" fill="#234e52" font-weight="600">Metadata</text>
+      <text x="420" y="490" font-size="10" fill="#285e61" font-family="monospace">total_records: 50000, pages: 5000</text>
+    </g>
+  </g>
+
+  <!-- Artifacts Server (Right) - Purple/Violet -->
+  <g id="server">
+    <text x="1020" y="90" font-size="16" font-weight="500" text-anchor="middle" fill="#4a5568">
+      Artifacts MCP
+    </text>
+    <rect x="900" y="110" width="240" height="420" rx="16" fill="#805ad5" stroke="#6b46c1" stroke-width="2.5"/>
+    
+    <!-- Database icon -->
+    <g transform="translate(960, 160)">
+      <ellipse cx="60" cy="20" rx="50" ry="15" fill="#faf5ff" stroke="#6b46c1" stroke-width="2"/>
+      <rect x="10" y="20" width="100" height="60" fill="#faf5ff" stroke="#6b46c1" stroke-width="2"/>
+      <ellipse cx="60" cy="80" rx="50" ry="15" fill="#e9d8fd" stroke="#6b46c1" stroke-width="2"/>
+      <path d="M 10 20 Q 10 30 10 35 Q 10 40 10 50" fill="none" stroke="#6b46c1" stroke-width="2"/>
+      <path d="M 110 20 Q 110 30 110 35 Q 110 40 110 50" fill="none" stroke="#6b46c1" stroke-width="2"/>
+    </g>
+    
+    <!-- Storage info -->
+    <rect x="920" y="270" width="200" height="100" rx="8" fill="#faf5ff" stroke="#9f7aea" stroke-width="2"/>
+    <text x="1020" y="295" font-size="13" font-weight="600" text-anchor="middle" fill="#44337a">
+      Persistent Storage
+    </text>
+    <text x="930" y="320" font-size="11" fill="#553c9a" font-weight="500">• Amazon S3 (content)</text>
+    <text x="930" y="340" font-size="11" fill="#553c9a" font-weight="500">• MongoDB (metadata)</text>
+    <text x="930" y="360" font-size="11" fill="#553c9a" font-weight="500">• Full datasets (50K+ recs)</text>
+    
+    <!-- Tools list -->
+    <rect x="920" y="390" width="200" height="110" rx="8" fill="#f7fafc" stroke="#9f7aea" stroke-width="2"/>
+    <text x="1020" y="412" font-size="12" font-weight="600" text-anchor="middle" fill="#44337a">
+      Available Tools
+    </text>
+    <text x="930" y="432" font-size="10" fill="#553c9a" font-weight="500">create_artifact()</text>
+    <text x="930" y="450" font-size="10" fill="#553c9a" font-weight="500">get_artifact_content()</text>
+    <text x="930" y="468" font-size="10" fill="#553c9a" font-weight="500">get_paginated_artifact()</text>
+    <text x="930" y="486" font-size="10" fill="#553c9a" font-weight="500">list_artifacts()</text>
+  </g>
+
+  <!-- Flow arrows with balanced colors -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5a67d8"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#38b2ac"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#805ad5"/>
+    </marker>
+  </defs>
+
+  <!-- Agent to Context flows -->
+  <g id="flows-left">
+    <path d="M 300 250 L 360 270" fill="none" stroke="#5a67d8" stroke-width="2.5" marker-end="url(#arrow-indigo)" stroke-dasharray="5,5"/>
+    <text x="315" y="255" font-size="10" font-weight="600" fill="#4c51bf">Query</text>
+    
+    <path d="M 360 330 L 300 310" fill="none" stroke="#38b2ac" stroke-width="2.5" marker-end="url(#arrow-indigo)"/>
+    <text x="315" y="328" font-size="10" font-weight="600" fill="#319795">Response</text>
+  </g>
+
+  <!-- Context to Server flows -->
+  <g id="flows-right">
+    <!-- Tool discovery -->
+    <path d="M 840 190 L 900 190" fill="none" stroke="#805ad5" stroke-width="2.5" marker-end="url(#arrow-purple)" stroke-dasharray="4,4"/>
+    <text x="855" y="180" font-size="10" font-weight="600" fill="#6b46c1">List tools</text>
+    
+    <!-- Store data -->
+    <path d="M 840 300 L 895 280" fill="none" stroke="#805ad5" stroke-width="2.5" marker-end="url(#arrow-purple)"/>
+    <text x="850" y="285" font-size="10" font-weight="600" fill="#6b46c1">Store 50K</text>
+    <text x="850" y="298" font-size="9" font-weight="500" fill="#805ad5">create_artifact()</text>
+    
+    <!-- Return reference -->
+    <path d="M 895 320 L 840 340" fill="none" stroke="#38b2ac" stroke-width="2.5" marker-end="url(#arrow-teal)" stroke-dasharray="5,5"/>
+    <text x="855" y="338" font-size="10" font-weight="600" fill="#319795">Return ref</text>
+    <text x="855" y="351" font-size="9" font-weight="500" fill="#38b2ac">ID + samples</text>
+    
+    <!-- Retrieve data -->
+    <path d="M 840 420 L 895 400" fill="none" stroke="#805ad5" stroke-width="2.5" marker-end="url(#arrow-purple)"/>
+    <text x="850" y="405" font-size="10" font-weight="600" fill="#6b46c1">Get data</text>
+    
+    <path d="M 895 440 L 840 460" fill="none" stroke="#38b2ac" stroke-width="2.5" marker-end="url(#arrow-teal)" stroke-dasharray="5,5"/>
+    <text x="850" y="458" font-size="10" font-weight="600" fill="#319795">Content</text>
+  </g>
+
+  <!-- Bottom panel -->
+  <g id="bottom-info">
+    <rect x="50" y="570" width="1100" height="130" rx="12" fill="#ffffff" stroke="#cbd5e0" stroke-width="2"/>
+    
+    <text x="600" y="600" font-size="16" font-weight="600" text-anchor="middle" fill="#2d3748">
+      How It Works: Sample + Artifact Pattern
+    </text>
+    
+    <g id="steps">
+      <circle cx="80" cy="630" r="16" fill="#38b2ac" stroke="#319795" stroke-width="2"/>
+      <text x="80" y="636" font-size="14" font-weight="bold" text-anchor="middle" fill="#fff">1</text>
+      <text x="110" y="635" font-size="12" fill="#2d3748">
+        Agent sends full dataset (50K records) to Artifacts MCP server via context
+      </text>
+      
+      <circle cx="80" cy="660" r="16" fill="#805ad5" stroke="#6b46c1" stroke-width="2"/>
+      <text x="80" y="666" font-size="14" font-weight="bold" text-anchor="middle" fill="#fff">2</text>
+      <text x="110" y="665" font-size="12" fill="#2d3748">
+        Server persists data to S3+MongoDB, stores complete dataset outside context
+      </text>
+      
+      <circle cx="620" cy="630" r="16" fill="#ecc94b" stroke="#d69e2e" stroke-width="2"/>
+      <text x="620" y="636" font-size="14" font-weight="bold" text-anchor="middle" fill="#fff">3</text>
+      <text x="650" y="635" font-size="12" fill="#2d3748">
+        Server returns artifact_id + 5 sample records (~500 tokens vs 1M+)
+      </text>
+      
+      <circle cx="620" cy="660" r="16" fill="#5a67d8" stroke="#4c51bf" stroke-width="2"/>
+      <text x="620" y="666" font-size="14" font-weight="bold" text-anchor="middle" fill="#fff">4</text>
+      <text x="650" y="665" font-size="12" fill="#2d3748">
+        Agent reasons with samples in context, retrieves full data when needed
+      </text>
+    </g>
+  </g>
+</svg>
