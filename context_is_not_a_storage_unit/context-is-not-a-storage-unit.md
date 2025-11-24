@@ -27,6 +27,8 @@ We discovered this the hard way while building autonomous agents for Salesforce 
 
 We needed a different architecture.
 
+> 💡 **Want proof?** We ran a controlled experiment with real Salesforce data-the artifact pattern achieved **99% token reduction** and **99.2% cost savings** with zero accuracy loss. [Skip to results →](#experiment-results-proof-at-scale) or [run the notebook yourself](https://github.com/yess-ai/yess-blogs/blob/main/context_is_not_a_storage_unit/artifacts_vs_context.ipynb).
+
 ---
 
 ## The Core Insight: Separation of Concerns
@@ -35,7 +37,7 @@ Here's what we learned: **AI agents need two completely different data handling 
 
 ### 1. Understanding the Data
 
-Agents need *sample data* for decision-making. Not the full dataset—just enough representative records to understand structure, identify patterns, and make intelligent choices. Think 5-10 carefully selected examples, not 50,000 complete records.
+Agents need *sample data* for decision-making. Not the full dataset-just enough representative records to understand structure, identify patterns, and make intelligent choices. Think 5-10 carefully selected examples, not 50,000 complete records.
 
 This aligns with Anthropic's findings on ***Progressive Disclosure*** for efficient agents. Instead of front-loading the context with every available tool definition, they found it far more effective to let agents discover tools on demand. We apply this same principle to data: provide a lightweight sample for initial understanding, and keep the full dataset in persistent storage until the agent explicitly needs to process it. ([Code execution with MCP - Anthropic](https://www.anthropic.com/engineering/code-execution-with-mcp))
 
@@ -53,7 +55,7 @@ This separation transforms how agents work:
 
 ## The Solution: Artifacts as Your Data Layer
 
-So how do we implement this separation in practice? Enter **artifacts**—a persistent storage layer designed specifically for AI agent workflows.
+So how do we implement this separation in practice? Enter **artifacts**-a persistent storage layer designed specifically for AI agent workflows.
 
 ### The Artifact Contract
 
@@ -164,7 +166,7 @@ result = generate_and_execute_code(
 # Returns: artifact_id + "Qualified rate: 34%, Enterprise: 3x conversion"
 ```
 
-Behind the scenes: 50,000 records processed with pandas, full statistical analysis, results filtered to actionable intelligence. Agent context remains clean—only insights enter the conversation.
+Behind the scenes: 50,000 records processed with pandas, full statistical analysis, results filtered to actionable intelligence. Agent context remains clean-only insights enter the conversation.
 
 > 💡 **Deep Dive**: For details on safe code generation, sandbox execution, and the "Analyze, Execute, Explain" pattern, see my previous article: [**Autonomous Adaptive Analytics**.](https://medium.com/@michaelw_42982/autonomous-adaptive-analytics-safe-agents-that-analyze-execute-and-explain-3d40387e7066)
 
@@ -172,7 +174,7 @@ Behind the scenes: 50,000 records processed with pandas, full statistical analys
 
 ## Experiment Results: Proof at Scale
 
-To validate this architecture, we ran a controlled experiment comparing both approaches using real Salesforce data with 200 lead records—a modest dataset that clearly demonstrates the scaling problem.
+To validate this architecture, we ran a controlled experiment comparing both approaches using real Salesforce data with 200 lead records-a modest dataset that clearly demonstrates the scaling problem.
 
 ![Experiment Results](images/experiment_result.png)
 
@@ -191,13 +193,13 @@ To validate this architecture, we ran a controlled experiment comparing both app
 
 - **Scalability proof**: With just 200 records, the context-heavy approach already consumed 164K tokens. At 50,000 records (typical enterprise scale), this would exceed most model context windows and cost over $200 per analysis.
 - **Zero accuracy trade-off**: Both approaches produced identical analysis results, verified with structured outputs using Pydantic models. The artifact pattern sacrifices nothing in terms of quality.
-- **Real-world viability**: The artifact-based approach completed in 6 seconds vs. nearly 5 minutes for context-heavy—the difference between interactive and unusable in production.
+- **Real-world viability**: The artifact-based approach completed in 6 seconds vs. nearly 5 minutes for context-heavy-the difference between interactive and unusable in production.
 
 <div style="background-color: #DEB887; padding: 8px 12px; border-radius: 4px; display: inline-block;">
 
 > ### Try It Yourself
 >
-> Want to reproduce these results? We created a [Jupyter notebook](https://github.com/yess-ai/yess-blogs/blob/main/context_is_not_a_storage_unit/artifacts_vs_context.ipynb) that runs both approaches side-by-side using the same Salesforce dataset. Simply execute the cells to see the dramatic differences in token usage, cost, and execution time—while verifying that both methods produce identical results.
+> Want to reproduce these results? We created a [Jupyter notebook](https://github.com/yess-ai/yess-blogs/blob/main/context_is_not_a_storage_unit/artifacts_vs_context.ipynb) that runs both approaches side-by-side using the same Salesforce dataset. Simply execute the cells to see the dramatic differences in token usage, cost, and execution time-while verifying that both methods produce identical results.
 >
 > The notebook includes:
 > - Complete implementation of both patterns
@@ -215,7 +217,7 @@ To validate this architecture, we ran a controlled experiment comparing both app
 
 ## The Technical Foundation: MCP-Based Architecture
 
-Our implementation is built on the **Model Context Protocol (MCP)**—agents interact with specialized MCP servers rather than calling services directly. This provides clean interfaces and enables powerful composition patterns.
+Our implementation is built on the **Model Context Protocol (MCP)**-agents interact with specialized MCP servers rather than calling services directly. This provides clean interfaces and enables powerful composition patterns.
 
 **Core MCP Servers:**
 
@@ -238,9 +240,9 @@ Our implementation is built on the **Model Context Protocol (MCP)**—agents int
 
 If you're building AI agents that work with real-world data volumes:
 
-1. **Context is for reasoning, not storage**—keep it focused on decision-making with sample data, move full datasets to persistent storage.
-2. **Artifacts enable scale**—by separating samples (understanding) from artifacts (storage) from code execution (processing), you handle 100 to 100,000+ records with the same architecture.
-3. **Progressive disclosure applies to data**—load schemas and datasets on-demand, not upfront. This consistently delivers 95%+ cost savings.
-4. **Privacy is architectural**—sensitive data can be processed and stored outside the model's context entirely.
+1. **Context is for reasoning, not storage**-keep it focused on decision-making with sample data, move full datasets to persistent storage.
+2. **Artifacts enable scale**-by separating samples (understanding) from artifacts (storage) from code execution (processing), you handle 100 to 100,000+ records with the same architecture.
+3. **Progressive disclosure applies to data**-load schemas and datasets on-demand, not upfront. This consistently delivers 95%+ cost savings.
+4. **Privacy is architectural**-sensitive data can be processed and stored outside the model's context entirely.
 
 The next time you're tempted to load massive datasets into context, ask: does the agent need to **understand** (use samples), **process** (use code execution), or **transfer** (use artifact references) this data? The answer determines your architecture.

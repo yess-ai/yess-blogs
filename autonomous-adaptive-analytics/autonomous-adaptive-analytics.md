@@ -47,7 +47,7 @@ Watch the agent explore data, write code, handle errors, and deliver production-
 > CLASSIFICATION_METHOD = "naive_bayes"  # or "random_forest"
 > ```
 >
-> This simple one-line configuration lets you switch between classification approaches **without any code changes**—the autonomous agent adapts its implementation automatically. We'll focus on Naive Bayes in this walkthrough.
+> This simple one-line configuration lets you switch between classification approaches **without any code changes**-the autonomous agent adapts its implementation automatically. We'll focus on Naive Bayes in this walkthrough.
 >
 > **💡 Tip:** For the easiest experience, run this notebook in Google Colab:
 > 1. Download the notebook from GitHub
@@ -413,7 +413,7 @@ This script packages:
 > - `build_naive_bayes_prompt()` - Naive Bayes implementation (used in this demo)
 > - `build_random_forest_prompt()` - Random Forest implementation
 >
-> Both share identical analysis/reporting sections via `get_shared_analysis_instructions()`, ensuring consistent outputs regardless of method. The autonomous agent receives the appropriate prompt based on your `CLASSIFICATION_METHOD` config—no manual intervention required.
+> Both share identical analysis/reporting sections via `get_shared_analysis_instructions()`, ensuring consistent outputs regardless of method. The autonomous agent receives the appropriate prompt based on your `CLASSIFICATION_METHOD` config-no manual intervention required.
 
 ---
 
@@ -744,7 +744,7 @@ The agent will:
 - Apply the same error recovery logic
 - Generate identical output artifacts with Random Forest results
 
-**This demonstrates the true power of method-agnostic autonomous analytics**—the infrastructure, error handling, and reporting remain constant regardless of your chosen ML approach.
+**This demonstrates the true power of method-agnostic autonomous analytics**-the infrastructure, error handling, and reporting remain constant regardless of your chosen ML approach.
 
 ---
 
@@ -753,11 +753,11 @@ The agent will:
 ### **Achieved:**
 
 - **End-to-end autonomous coding agent** that takes in a business question and chosen ML method, then produces complete analysis without human intervention
-- **Method-agnostic architecture**: Demonstrated with both Naive Bayes and Random Forest configurations—switch algorithms with one config variable, zero pipeline changes
+- **Method-agnostic architecture**: Demonstrated with both Naive Bayes and Random Forest configurations-switch algorithms with one config variable, zero pipeline changes
 - **Closed-loop execution** in tenant-isolated **Daytona** sandboxes with automatic cleanup
 - **Self-directed code generation** via Claude Code SDK: agent autonomously decides data exploration, classification implementation, visualization strategy, and reporting format based on configured method
 - **Autonomous error handling**: agent self-heals inside the sandbox (missing libraries, NaN values, stratification issues), adapting to runtime problems and continuing from checkpoints
-- **Production-ready artifacts** including executive summary (6.4KB markdown), statistical analysis, 4 visualizations, audit trail CSV, and executable Python code—all generated and downloaded automatically
+- **Production-ready artifacts** including executive summary (6.4KB markdown), statistical analysis, 4 visualizations, audit trail CSV, and executable Python code-all generated and downloaded automatically
 
 ### **What Can Be Improved:**
 
