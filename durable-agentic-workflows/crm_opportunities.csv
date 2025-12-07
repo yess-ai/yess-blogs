@@ -1,0 +1,6 @@
+id,name,stage,amount,contact_id,close_date
+1,Enterprise Deal,Negotiation,50000,1,2024-06-30
+2,Starter Package,Closed Won,5000,2,2024-03-15
+3,Mid-Market Expansion,Prospecting,25000,3,2024-07-15
+4,Analytics Platform,Closed Won,75000,4,2024-04-20
+
