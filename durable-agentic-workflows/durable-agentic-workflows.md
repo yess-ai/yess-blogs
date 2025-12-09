@@ -67,11 +67,15 @@ Balance reliability with efficiency - minimize execution time without compromisi
 
 ### **The Solution - Task Decomposition**
 
-Breaking complex workflows into small steps unlocks all three requirements:
+It's the last few hours before a pressing deadline. You're running final iterations on your workflow - 45 minutes in, processing 2,000 contacts. It's 90% complete when a pod crashes. Everything's gone. You start over, knowing you might not make the deadline.
 
-- **Enables durable execution:** Checkpoint after each small step instead of losing hours of work
-- **Makes validation practical:** Verify small outputs instead of massive mixed results
-- **Reveals optimization:** See which steps are independent and can run in parallel
+Now imagine a different scenario: The same crash happens, but you've only lost 2 minutes of work. Your workflow picks up exactly where it left off. You check the logs, 8 steps completed, validated, and checkpointed. One step failed. You fix it and rerun *just that step*. You'll still make the deadline.
+
+This is the power of task decomposition. By breaking complex workflows into small, discrete steps, you transform catastrophic failures into minor hiccups:
+
+- **Durable execution:** Checkpoint after each step → lose minutes, not hours
+- **Practical validation:** Verify 200 lines at a time → catch issues before they cascade
+- **Smart optimization:** Identify independent steps → run them in parallel
 
 | **Aspect** | **Before Task Decomposition** | **After Task Decomposition** |
 | --- | --- | --- |
