@@ -67,15 +67,24 @@ Balance reliability with efficiency - minimize execution time without compromisi
 
 ### **The Solution - Task Decomposition**
 
-It's the last few hours before a pressing deadline. You're running final iterations on your workflow - 45 minutes in, processing 2,000 contacts. It's 90% complete when a pod crashes. Everything's gone. You start over, knowing you might not make the deadline.
+**The business case is straightforward:** Long-running workflows are expensive to retry and validate. Task decomposition reduces both costs.
 
-Now imagine a different scenario: The same crash happens, but you've only lost 2 minutes of work. Your workflow picks up exactly where it left off. You check the logs, 8 steps completed, validated, and checkpointed. One step failed. You fix it and rerun *just that step*. You'll still make the deadline.
+**Is this solution right for you?** Ask yourself:
 
-This is the power of task decomposition. By breaking complex workflows into small, discrete steps, you transform catastrophic failures into minor hiccups:
+- Do your workflows run for more than a few minutes?
+- Can your workflows be broken into smaller, independent tasks?
+- Would a failure halfway through waste significant time and money?
+- Do you need to verify intermediate results for quality/correctness?
 
-- **Durable execution:** Checkpoint after each step → lose minutes, not hours
-- **Practical validation:** Verify 200 lines at a time → catch issues before they cascade
-- **Smart optimization:** Identify independent steps → run them in parallel
+Answering yes to even one indicates task decomposition could benefit your workflow.
+
+**The core principle:** Break complex workflows into small, discrete steps with checkpoints between them.
+
+**How to approach implementation:**
+1. **Identify natural breakpoints** in your workflow where you can checkpoint state (e.g., after data fetching, after each analysis phase)
+2. **Define validation criteria** for each step's output, what makes it "good enough" to proceed?
+3. **Determine dependencies** between steps to identify what can run in parallel
+4. **Set appropriate timeouts** for each step based on expected execution time
 
 | **Aspect** | **Before Task Decomposition** | **After Task Decomposition** |
 | --- | --- | --- |
