@@ -50,4 +50,26 @@ This post reveals the critical architectural pattern for building production-rea
 
 ---
 
+### [Building Reliable Multi-Agent Workflows: Durable Execution with Validation Gates](./durable-agentic-workflows/)
+
+**Transform fragile 45-minute workflows into resilient pipelines with checkpointing, validation gates, and smart recovery.**
+
+This post shows how to build production-ready multi-agent workflows that survive infrastructure failures, catch AI hallucinations early, and optimize execution through task decomposition. Learn the exact patterns we use at Yess to process enterprise CRM data reliably.
+
+**What you'll learn:**
+- 🔄 Durable execution with automatic checkpointing and recovery
+- ✅ Validation gates to catch AI errors before they cascade
+- ⚡ Parallel optimization for independent workflow steps
+- 🏗️ Production patterns using Temporal and Agno AI
+
+**[Read the blog post](./durable-agentic-workflows/durable-agentic-workflows.md)** | **[Download the demo](./durable-agentic-workflows/durable-agentic-workflows-demo.zip)**
+
+![Difficulty: Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-yellow)
+![Time: 15 mins](https://img.shields.io/badge/Time-15%20mins-blue)
+![Python 3.8+](https://img.shields.io/badge/Python-3.8+-green)
+
+**Key Technologies:** Temporal, Agno AI, OpenAI, Durable Workflows, Multi-Agent Systems
+
+---
+
 **Built with ❤️ by the team at [YESS.AI](https://yess.ai)**
