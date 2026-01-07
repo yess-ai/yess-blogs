@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="agentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mcpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EF4444;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="unusedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B7280;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#9CA3AF;stop-opacity:0.5" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="#0F172A"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#F8FAFC" text-anchor="middle">The Context Bloat Problem</text>
+  <text x="450" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#94A3B8" text-anchor="middle">50 tools loaded, 3 tools needed per query</text>
+  
+  <!-- Central Agent -->
+  <g filter="url(#shadow)">
+    <rect x="350" y="180" width="200" height="100" rx="12" fill="url(#agentGrad)"/>
+    <text x="450" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">AI Agent</text>
+    <text x="450" y="245" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#E0E7FF" text-anchor="middle">System Prompt: 25K tokens</text>
+    <text x="450" y="265" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#C7D2FE" text-anchor="middle">(20K from tool definitions)</text>
+  </g>
+  
+  <!-- MCP Connections - Left Side -->
+  <!-- Salesforce MCP - USED -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="100" width="140" height="55" rx="8" fill="url(#mcpGrad)"/>
+    <text x="120" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white" text-anchor="middle">Salesforce MCP</text>
+    <text x="120" y="142" font-family="monospace" font-size="9" fill="#FEF3C7" text-anchor="middle">5 tools • 2.5K tokens</text>
+  </g>
+  <line x1="190" y1="127" x2="350" y2="200" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- Slack MCP - UNUSED -->
+  <g>
+    <rect x="50" y="170" width="140" height="55" rx="8" fill="url(#unusedGrad)" stroke="#4B5563" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="120" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#9CA3AF" text-anchor="middle">Slack MCP</text>
+    <text x="120" y="212" font-family="monospace" font-size="9" fill="#6B7280" text-anchor="middle">4 tools • 1.8K tokens</text>
+  </g>
+  <line x1="190" y1="197" x2="350" y2="220" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,3"/>
+  
+  <!-- GitHub MCP - UNUSED -->
+  <g>
+    <rect x="50" y="240" width="140" height="55" rx="8" fill="url(#unusedGrad)" stroke="#4B5563" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="120" y="265" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#9CA3AF" text-anchor="middle">GitHub MCP</text>
+    <text x="120" y="282" font-family="monospace" font-size="9" fill="#6B7280" text-anchor="middle">8 tools • 3.2K tokens</text>
+  </g>
+  <line x1="190" y1="267" x2="350" y2="240" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,3"/>
+  
+  <!-- Postgres MCP - UNUSED -->
+  <g>
+    <rect x="50" y="310" width="140" height="55" rx="8" fill="url(#unusedGrad)" stroke="#4B5563" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="120" y="335" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#9CA3AF" text-anchor="middle">Postgres MCP</text>
+    <text x="120" y="352" font-family="monospace" font-size="9" fill="#6B7280" text-anchor="middle">6 tools • 2.8K tokens</text>
+  </g>
+  <line x1="190" y1="337" x2="350" y2="260" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,3"/>
+  
+  <!-- MCP Connections - Right Side -->
+  <!-- Calendar MCP - UNUSED -->
+  <g>
+    <rect x="710" y="100" width="140" height="55" rx="8" fill="url(#unusedGrad)" stroke="#4B5563" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="780" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#9CA3AF" text-anchor="middle">Calendar MCP</text>
+    <text x="780" y="142" font-family="monospace" font-size="9" fill="#6B7280" text-anchor="middle">5 tools • 2.1K tokens</text>
+  </g>
+  <line x1="710" y1="127" x2="550" y2="200" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,3"/>
+  
+  <!-- Email MCP - USED -->
+  <g filter="url(#shadow)">
+    <rect x="710" y="170" width="140" height="55" rx="8" fill="url(#mcpGrad)"/>
+    <text x="780" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white" text-anchor="middle">Email MCP</text>
+    <text x="780" y="212" font-family="monospace" font-size="9" fill="#FEF3C7" text-anchor="middle">3 tools • 1.4K tokens</text>
+  </g>
+  <line x1="710" y1="197" x2="550" y2="220" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- Jira MCP - UNUSED -->
+  <g>
+    <rect x="710" y="240" width="140" height="55" rx="8" fill="url(#unusedGrad)" stroke="#4B5563" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="780" y="265" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#9CA3AF" text-anchor="middle">Jira MCP</text>
+    <text x="780" y="282" font-family="monospace" font-size="9" fill="#6B7280" text-anchor="middle">7 tools • 3.0K tokens</text>
+  </g>
+  <line x1="710" y1="267" x2="550" y2="240" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,3"/>
+  
+  <!-- Analytics MCP - USED -->
+  <g filter="url(#shadow)">
+    <rect x="710" y="310" width="140" height="55" rx="8" fill="url(#mcpGrad)"/>
+    <text x="780" y="335" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white" text-anchor="middle">Analytics MCP</text>
+    <text x="780" y="352" font-family="monospace" font-size="9" fill="#FEF3C7" text-anchor="middle">6 tools • 2.6K tokens</text>
+  </g>
+  <line x1="710" y1="337" x2="550" y2="260" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- More MCPs indicator -->
+  <text x="120" y="395" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748B" text-anchor="middle">+ 2 more MCPs...</text>
+  <text x="780" y="395" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748B" text-anchor="middle">+ 2 more MCPs...</text>
+  
+  <!-- Legend -->
+  <g transform="translate(280, 420)">
+    <rect x="0" y="0" width="340" height="65" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+    <text x="170" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#F8FAFC" text-anchor="middle">This Query</text>
+    
+    <!-- Used -->
+    <rect x="20" y="35" width="16" height="16" rx="3" fill="url(#mcpGrad)"/>
+    <text x="42" y="47" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#F8FAFC">Used (3 MCPs)</text>
+    
+    <!-- Unused -->
+    <rect x="140" y="35" width="16" height="16" rx="3" fill="url(#unusedGrad)" stroke="#4B5563" stroke-width="1" stroke-dasharray="2,1"/>
+    <text x="162" y="47" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#94A3B8">Unused (7 MCPs)</text>
+    
+    <!-- Waste -->
+    <text x="280" y="47" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#EF4444">~17K wasted tokens</text>
+  </g>
+</svg>
+
