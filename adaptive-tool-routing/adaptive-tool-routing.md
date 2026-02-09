@@ -93,12 +93,12 @@ Most agentic frameworks follow a standard initialization flow:
 
 ATR isn't a separate orchestration layer - it's a step integrated into the agent's existing initialization flow.
 
-<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 30px 0;">
-  <div style="flex: 1; min-width: 250px; max-width: 360px;">
+<div style="display: flex; gap: 20px; justify-content: center; margin: 30px 0;">
+  <div style="flex: 1; max-width: 360px;">
     <h4 style="text-align: center; margin-bottom: 10px;">Standard Agent Initialization (Before ATR)</h4>
     <img src="images/standard-init-flow.svg" alt="Standard Agent Initialization Flow" style="width: 100%;" />
   </div>
-  <div style="flex: 1; min-width: 250px; max-width: 360px;">
+  <div style="flex: 1; max-width: 360px;">
     <h4 style="text-align: center; margin-bottom: 10px;">Agent Initialization With ATR</h4>
     <img src="images/atr-init-flow.svg" alt="Agent Initialization with ATR Flow" style="width: 100%;" />
   </div>
