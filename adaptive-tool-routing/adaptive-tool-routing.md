@@ -8,7 +8,7 @@
   <img src="images/confused_llm.png" width="100%" alt="Confused LLM" />
 </p>
 
-**TL;DR:** As agents accumulate MCP connections, they drown in tool definitions - burning context tokens and confusing themselves about which tools to use. Adaptive Tool Routing (ATR) fixes this by integrating a routing step into the agent's initialization flow, filtering tools based on the user query before they reach the system prompt.
+**TL;DR:** As agents accumulate MCP connections, they drown in tool definitions - burning context tokens and confusing themselves about which tools to use. Adaptive Tool Routing (ATR) fixes this by inserting a routing step into the agent's flow, filtering tools based on the user query before they reach the system prompt. This pattern led us to build [`adaptive-tools`](https://test.pypi.org/project/adaptive-tools/) - an open-source package that brings ATR to any agentic framework with a few lines of code.
 <br clear="all" />
 
 ---
@@ -106,7 +106,7 @@ ATR isn't a separate orchestration layer - it's a step integrated into the agent
 
 ### The Integration Point
 
-The key is modifying `determine_tools_for_model()` (or equivalent in your framework) to include a routing step.
+The key is intercepting tool resolution before tools reach the system prompt.
 
 **The Pattern:**
 
@@ -121,7 +121,6 @@ The routing function receives the query and tool definitions (IDs, names, capabi
 ## Section IV: The Routing Logic - Intent-Based Tool Selection
 
 The routing function uses a lightweight LLM call to classify which tools are relevant to the user's query.
-
 
 1. **Input preparation** - Format tools as lightweight summaries: `{name, description}`. Skip parameter schemas to minimize tokens. Truncate long descriptions.
 
@@ -169,207 +168,99 @@ get_technical_indicators
 
 The key is conservative selection with overlap tolerance - if the model is unsure between similar tools, it includes both. A `max_tools` cap prevents runaway selection.
 
-### Implementation: Subclassing Your Agent
+---
 
-The cleanest approach is to subclass your framework's agent and override the tool resolution method. Here's how it works with [Agno](https://github.com/agno-agi/agno):
+## Section V: From Pattern to Package - `adaptive-tools`
 
-**Step 1: Create a FilteredAgent subclass**
+After implementing this pattern across several internal projects, we kept writing the same routing logic, the same prompt templates, the same adapter code for each framework. So we packaged it.
 
-```python
-from agno.agent import Agent
-from agno.tools.function import Function
+[`adaptive-tools`](https://test.pypi.org/project/adaptive-tools/) (ATR) is an open-source Python package that implements the routing pattern described above with zero core dependencies, pluggable LLM providers, and adapters for every major agentic framework.
 
-class FilteredAgent(Agent):
-    """Agent that filters tools based on user input using a small LLM."""
+### Installation
 
-    def __init__(
-        self,
-        filter_model: str = "gpt-4o-mini",  # Small/fast model for filtering
-        filter_enabled: bool = True,
-        max_tools: int = 5,
-        **kwargs,
-    ):
-        super().__init__(**kwargs)
-        self.filter_model_id = filter_model
-        self.filter_enabled = filter_enabled
-        self.max_tools = max_tools
-        self._filter_agent: Optional[Agent] = None
+```bash
+# Core + OpenRouter (recommended - access to many models via single API key)
+pip install -i https://test.pypi.org/simple/ adaptive-tools[openrouter]
+
+# With LangGraph support
+pip install -i https://test.pypi.org/simple/ adaptive-tools[langgraph]
+
+# Everything
+pip install -i https://test.pypi.org/simple/ adaptive-tools[all]
 ```
 
-**Step 2: Override `_determine_tools_for_model`**
+### Core Concepts
 
-This is the key integration point - intercept tool resolution before tools reach the system prompt:
+The package has three building blocks:
+
+**`ToolSpec`** - A framework-agnostic tool representation. Just a name, description, and optional metadata:
 
 ```python
-def _determine_tools_for_model(
-    self,
-    model: Model,
-    processed_tools: List[Union[Toolkit, callable, Function, dict]],
-    run_response: RunOutput,
-    run_context: RunContext,
-    session: AgentSession,
-) -> List[Union[Function, dict]]:
-    """Override to filter tools before they're sent to the model."""
-    
-    # 1. Get all functions from parent (flattens Toolkits into Functions)
-    all_functions = super()._determine_tools_for_model(
-        model, processed_tools, run_response, run_context, session
-    )
+from atr import ToolSpec
 
-    if not self.filter_enabled or not all_functions:
-        return all_functions
-
-    # 2. Extract user input from the run response
-    input_text = self._extract_input_text(run_response)
-    if not input_text:
-        return all_functions
-
-    # 3. Filter tools using the lightweight LLM
-    filtered = self._filter_tools_sync(input_text, all_functions)
-
-    return filtered  # Only filtered tools get added to system prompt
+spec = ToolSpec(
+    name="get_stock_price",
+    description="Get the current stock price for a ticker symbol",
+    parameters={"type": "object", ...},  # Optional JSON Schema
+    source="mcp:yfinance",               # Optional origin identifier
+)
 ```
 
-**Step 3: Build the routing prompt**
-
-Format tools as lightweight summaries - no parameter schemas needed:
+**`ToolRouter`** - The main entry point. Registers tools, routes queries, returns filtered results:
 
 ```python
-def _build_tools_prompt(self, input_text: str, functions: List[Function]) -> str:
-    """Build the prompt for the tool filter agent."""
-    tool_descriptions = []
-    for f in functions:
-        desc = f.description or "No description"
-        if len(desc) > 150:  # Truncate long descriptions
-            desc = desc[:147] + "..."
-        tool_descriptions.append(f"- {f.name}: {desc}")
+from atr import ToolRouter
+from atr.llm import OpenRouterLLM
 
-    tools_list = "\n".join(tool_descriptions)
-
-    return f"""User query: "{input_text}"
-
-Available tools:
-{tools_list}
-
-Select the tools needed for this query. Return only tool names, one per line."""
-```
-
-**Step 4: Create the filter agent and execute routing**
-
-```python
-def _get_filter_agent(self) -> Agent:
-    """Lazily create the tool filter agent."""
-    if self._filter_agent is None:
-        self._filter_agent = Agent(
-            model=OpenAIChat(id=self.filter_model_id),
-            instructions=[
-                "You are a tool selector assistant.",
-                "Given a user query and a list of available tools, select ONLY the tools directly relevant to answering the query.",
-                "Be conservative - select only tools that will definitely be needed.",
-                "Return ONLY the tool names, one per line, no explanations.",
-                "If unsure between similar tools, include both.",
-            ],
-            markdown=False,
-        )
-    return self._filter_agent
-
-def _filter_tools_sync(self, input_text: str, functions: List[Function]) -> List[Function]:
-    """Filter tools using the filter agent."""
-    prompt = self._build_tools_prompt(input_text, functions)
-    
-    filter_agent = self._get_filter_agent()
-    response = filter_agent.run(prompt)
-
-    # Parse selected tool names from response
-    selected_names = set(
-        line.strip().lstrip("- ").strip()
-        for line in response.content.strip().split("\n")
-        if line.strip()
-    )
-
-    # Filter to only valid, selected tools
-    all_tool_names = {f.name for f in functions}
-    valid_selected = selected_names & all_tool_names
-
-    filtered = [f for f in functions if f.name in valid_selected]
-    
-    # Apply max_tools limit
-    if len(filtered) > self.max_tools:
-        filtered = filtered[:self.max_tools]
-
-    return filtered if filtered else functions  # Fallback to all if none selected
-```
-
-**Step 5: Use it like a regular agent**
-
-```python
-from agno.models.openai import OpenAIChat
-from agno.tools.yfinance import YFinanceTools
-
-agent = FilteredAgent(
-    model=OpenAIChat(id="gpt-4o"),      # Main model for responses
-    filter_model="gpt-4o-mini",          # Small model for tool filtering
-    filter_enabled=True,
+router = ToolRouter(
+    llm=OpenRouterLLM(model="anthropic/claude-3-haiku"),
     max_tools=5,
-    tools=[YFinanceTools()],             # 9 YFinance tools
 )
 
-# Query runs through filtering automatically
-response = agent.run("What is the current price of AAPL?")
-# Only get_current_stock_price reaches the system prompt
+router.add_tools([
+    ToolSpec(name="get_stock_price", description="Get current stock price"),
+    ToolSpec(name="get_company_news", description="Get company news articles"),
+    ToolSpec(name="get_weather", description="Get weather for a location"),
+    ToolSpec(name="send_email", description="Send an email"),
+    ToolSpec(name="create_calendar_event", description="Create a calendar event"),
+])
+
+filtered = router.route("What is AAPL's stock price?")
+print(filtered.names)  # {'get_stock_price'}
 ```
 
----
+**`ToolCollection`** - The routing result. Provides convenient access to filtered tools:
 
-## Section V: Advanced Technique - Feedback Loop for Missing Tools
+```python
+filtered.names                        # Set of tool names
+filtered.filter_by_names(["tool1"])   # Further filtering
+len(filtered)                         # Number of tools
+"get_stock_price" in filtered         # Membership check
+```
 
-The router won't always get it right on the first try. Complex queries might need tools the router didn't anticipate.
+### Adapters - Bridging Frameworks
 
-Consider this scenario: A user asks "Get Tesla's stock performance and calculate if it's a good buy based on technicals." The router selects price-fetching tools, the agent retrieves the data, and then realizes it needs technical indicator tools to actually assess the buy signal.
+The real power is in adapters. Every major framework represents tools differently - LangChain uses `BaseTool`, Agno uses `Function`, OpenAI uses JSON dicts. ATR adapters convert between these and `ToolSpec`:
 
-Instead of failing, the agent can signal what's missing. The system catches this signal, re-routes with enriched context (now explicitly asking for "technical indicators"), expands the toolset, and lets the agent continue.
+```python
+from atr.adapters import LangChainAdapter, MCPAdapter, AgnoAdapter, OpenAIAdapter
 
-The key insight: the re-routing query isn't just the original user request - it includes what the agent has learned it needs. "Get TSLA performance" might not surface technical indicator tools, but "need technical indicators to assess buy signal" directly matches them.
+# Convert framework tools → ToolSpecs (for routing)
+specs = LangChainAdapter.to_specs(langchain_tools)
+specs = MCPAdapter.to_specs(mcp_tools)
 
-This creates a self-healing system where incomplete initial routing gets corrected through execution feedback, with appropriate guards to prevent infinite loops.
+# After routing, filter original tools by the result
+filtered_tools = LangChainAdapter.filter_tools(langchain_tools, filtered_specs)
+filtered_tools = MCPAdapter.filter_tools(mcp_tools, filtered_specs)
+```
 
----
+Every adapter follows the same two-method pattern: `to_specs()` to convert in, `filter_tools()` to filter back. The original framework objects are preserved - ATR never modifies your tools.
 
-## Section VI: Scaling ATR with RAG-Based Tool Discovery
-
-### The Scaling Challenge
-
-ATR works well with 50 tools. But what about 500? Or 5,000?
-
-Passing hundreds of tool definitions to even a lightweight routing model becomes expensive and slow. The context window fills up, latency increases, and costs multiply.
-
-### The Solution: Treat Tools as Searchable Documents
-
-The same RAG pattern that works for document retrieval works for tool discovery. Instead of searching documents to answer questions, search tool definitions to find capabilities.
-
-**The approach:**
-
-1. **Index tools semantically** - Store tool definitions (name, description, capability tags, and crucially - synthetic example queries) in a vector database
-2. **Retrieve candidates** - When a request arrives, embed it and find the top-k most similar tools
-3. **Refine with LLM** - Pass only those candidates to the routing model for final selection
-
-This turns a 500-tool problem into a 15-tool problem. The semantic search does the heavy lifting cheaply, and the LLM makes the final call on a manageable set.
-
-**Key insight:** Include synthetic example queries in your tool index. "Is AAPL overbought?" matches poorly against "Calculate RSI and Bollinger Bands" but matches strongly against "Check if a stock is overbought" - a synthetic query you generate for that tool.
-
-### When to Consider This
-
-| Tool Count | Approach |
-|------------|----------|
-| Under 50 | Standard ATR routing |
-| 50-200 | RAG can reduce costs |
-| 200+ | RAG becomes essential |
-
-This is an extension of ATR, not a replacement. The core pattern remains the same - you're just adding a retrieval layer before the routing decision.
+The package includes built-in integrations for LangGraph (routing nodes), Agno, OpenAI Agents SDK, LiteLLM, and raw MCP. See the [`examples/`](https://github.com/yess-ai/atr/tree/main/examples) directory in the repo for complete working examples with each framework.
 
 ---
 
-## Section VII: When to Use ATR
+## Section VI: When to Use ATR
 
 ### Use ATR When:
 
@@ -398,36 +289,6 @@ Context savings:   ~10,000-15,000 tokens (avoided tool definitions)
 Break-even at:     ~15-20 tools
 Clear win at:      30+ tools
 ```
-
----
-
-## Section VIII: Key Takeaways
-
-1. **Tool sprawl kills agent performance**  -  Research shows 7-85% accuracy degradation with large tool catalogs. More tools ≠ more capable.
-
-2. **Integrate routing into agent init**  -  ATR isn't a separate orchestrator. It's a filtering step inside `determine_tools_for_model()` that fits naturally into existing framework patterns.
-
-3. **Keep routing lightweight**  -  A single intent classification call with a small model (~100ms, ~200-400 tokens) handles both simple and multi-step queries effectively.
-
-4. **Build in recovery**  -  Feedback loops let the agent signal missing capabilities and re-route. Don't fail on first miss.
-
-5. **Scale with RAG**  -  When tool counts explode, index them in a vector DB. Semantic search finds candidates, LLM refines.
-
-6. **Framework-friendly**  -  ATR requires minimal changes to existing agentic architectures. Hook into the tool resolution pipeline, filter before building the system prompt.
-
----
-
-## What's Next
-
-ATR is a pattern, not a library. To implement it:
-
-1. **Identify your framework's tool resolution point**  -  Find where tools get flattened into the system prompt
-2. **Add the routing step**  -  Insert query analysis before tools are added
-3. **Start simple**  -  Basic intent classification works for most cases
-4. **Add feedback loops**  -  Let the agent request more tools when needed
-5. **Scale with RAG**  -  Add vector indexing when tool counts grow
-
-The pattern applies whether you're using LangChain, CrewAI, Agno, or building custom agents.
 
 ---
 
