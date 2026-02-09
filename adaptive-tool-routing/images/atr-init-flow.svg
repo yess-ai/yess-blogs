@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 470" font-family="system-ui, -apple-system, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 560" font-family="system-ui, -apple-system, sans-serif">
   <defs>
     <linearGradient id="headerGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
@@ -8,9 +8,17 @@
       <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="atrGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#fde68a;stop-opacity:1" />
+    <linearGradient id="atrGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="atrBoxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fffbeb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fef3c7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="agentGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
     </linearGradient>
     <filter id="shadow2" x="-10%" y="-10%" width="120%" height="130%">
       <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.1"/>
@@ -24,54 +32,65 @@
   <!-- Arrow down -->
   <path d="M250 51 L250 75" stroke="#94a3b8" stroke-width="2" fill="none"/>
   <polygon points="250,85 244,75 256,75" fill="#94a3b8"/>
-  
-  <!-- Main container -->
-  <rect x="50" y="95" width="400" height="360" rx="12" fill="url(#boxGrad2)" stroke="#e2e8f0" stroke-width="2" filter="url(#shadow2)"/>
-  
-  <!-- Header -->
-  <rect x="50" y="95" width="400" height="44" rx="12" fill="url(#headerGrad2)"/>
-  <rect x="50" y="127" width="400" height="12" fill="url(#headerGrad2)"/>
-  <text x="250" y="123" text-anchor="middle" fill="white" font-size="16" font-weight="600">Agent Initialization</text>
-  
-  <!-- Steps -->
-  <g font-size="14" fill="#374151">
-    <!-- Step 1 -->
-    <circle cx="85" cy="165" r="14" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
-    <text x="85" y="170" text-anchor="middle" fill="#047857" font-weight="600" font-size="12">1</text>
-    <text x="110" y="170" fill="#374151">Connect to MCPs</text>
-    
-    <!-- Step 2 -->
-    <circle cx="85" cy="200" r="14" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
-    <text x="85" y="205" text-anchor="middle" fill="#047857" font-weight="600" font-size="12">2</text>
-    <text x="110" y="205" fill="#374151">List tools from MCPs + Toolkits</text>
-    
-    <!-- Step 3 -->
-    <circle cx="85" cy="235" r="14" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
-    <text x="85" y="240" text-anchor="middle" fill="#047857" font-weight="600" font-size="12">3</text>
-    <text x="110" y="240" fill="#374151">Prepare tools for model</text>
-    
-    <!-- Gather all tools -->
-    <text x="130" y="262" fill="#6b7280" font-size="12">Gather all 50 tools</text>
-    
-    <!-- ATR Box -->
-    <rect x="120" y="275" width="310" height="70" rx="8" fill="url(#atrGrad)" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 2"/>
-    <text x="275" y="295" text-anchor="middle" fill="#b45309" font-size="12" font-weight="600">ATR (Adaptive Tool Routing)</text>
-    <text x="140" y="315" fill="#92400e" font-size="12">Analyze query intent</text>
-    <text x="140" y="333" fill="#92400e" font-size="12">Filter to relevant tools</text>
-    
-    <!-- Returns badge -->
-    <rect x="130" y="355" width="200" height="26" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
-    <text x="230" y="373" text-anchor="middle" fill="#059669" font-size="12" font-weight="500">Returns FILTERED 5 tools</text>
-    
-    <!-- Step 4 -->
-    <circle cx="85" cy="395" r="14" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
-    <text x="85" y="400" text-anchor="middle" fill="#047857" font-weight="600" font-size="12">4</text>
-    <text x="110" y="400" fill="#374151">Build system prompt</text>
-    <text x="280" y="400" fill="#059669" font-size="12" font-weight="500">(5 tools)</text>
-    
-    <!-- Step 5 -->
-    <circle cx="85" cy="435" r="14" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
-    <text x="85" y="440" text-anchor="middle" fill="#047857" font-weight="600" font-size="12">5</text>
-    <text x="110" y="440" fill="#374151">Execute</text>
+
+  <!-- Pre-init: Gather tools -->
+  <rect x="50" y="95" width="400" height="100" rx="12" fill="url(#boxGrad2)" stroke="#e2e8f0" stroke-width="2" filter="url(#shadow2)"/>
+  <rect x="50" y="95" width="400" height="40" rx="12" fill="url(#headerGrad2)"/>
+  <rect x="50" y="123" width="400" height="12" fill="url(#headerGrad2)"/>
+  <text x="250" y="121" text-anchor="middle" fill="white" font-size="15" font-weight="600">Gather Tools</text>
+
+  <g font-size="13" fill="#374151">
+    <circle cx="85" cy="157" r="12" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+    <text x="85" y="161" text-anchor="middle" fill="#047857" font-weight="600" font-size="11">1</text>
+    <text x="106" y="161" fill="#374151">Connect to MCPs + Toolkits</text>
+
+    <circle cx="85" cy="183" r="12" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+    <text x="85" y="187" text-anchor="middle" fill="#047857" font-weight="600" font-size="11">2</text>
+    <text x="106" y="187" fill="#374151">List all tools (50 total)</text>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M250 200 L250 220" stroke="#94a3b8" stroke-width="2" fill="none"/>
+  <polygon points="250,230 244,220 256,220" fill="#94a3b8"/>
+
+  <!-- ATR Box (separate pre-processing step) -->
+  <rect x="50" y="240" width="400" height="130" rx="12" fill="url(#atrBoxGrad)" stroke="#f59e0b" stroke-width="2" filter="url(#shadow2)"/>
+  <rect x="50" y="240" width="400" height="40" rx="12" fill="url(#atrGrad)"/>
+  <rect x="50" y="268" width="400" height="12" fill="url(#atrGrad)"/>
+  <text x="250" y="266" text-anchor="middle" fill="white" font-size="15" font-weight="600">ATR (Adaptive Tool Routing)</text>
+
+  <g font-size="13" fill="#374151">
+    <circle cx="85" cy="302" r="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="85" y="306" text-anchor="middle" fill="#b45309" font-weight="600" font-size="11">3</text>
+    <text x="106" y="306" fill="#92400e">Analyze query intent (LLM call)</text>
+
+    <circle cx="85" cy="332" r="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="85" y="336" text-anchor="middle" fill="#b45309" font-weight="600" font-size="11">4</text>
+    <text x="106" y="336" fill="#92400e">Filter to relevant tools</text>
+  </g>
+
+  <!-- Returns badge -->
+  <rect x="150" y="357" width="200" height="26" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="250" y="375" text-anchor="middle" fill="#059669" font-size="12" font-weight="500">FILTERED 5 tools</text>
+
+  <!-- Arrow down -->
+  <path d="M250 390 L250 410" stroke="#94a3b8" stroke-width="2" fill="none"/>
+  <polygon points="250,420 244,410 256,410" fill="#94a3b8"/>
+
+  <!-- Agent Init box -->
+  <rect x="50" y="430" width="400" height="115" rx="12" fill="url(#boxGrad2)" stroke="#e2e8f0" stroke-width="2" filter="url(#shadow2)"/>
+  <rect x="50" y="430" width="400" height="40" rx="12" fill="url(#agentGrad2)"/>
+  <rect x="50" y="458" width="400" height="12" fill="url(#agentGrad2)"/>
+  <text x="250" y="456" text-anchor="middle" fill="white" font-size="15" font-weight="600">Agent Initialization</text>
+
+  <g font-size="13" fill="#374151">
+    <circle cx="85" cy="492" r="12" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+    <text x="85" y="496" text-anchor="middle" fill="#047857" font-weight="600" font-size="11">5</text>
+    <text x="106" y="496" fill="#374151">Create agent with filtered tools</text>
+    <text x="330" y="496" fill="#059669" font-size="12" font-weight="500">(5 tools)</text>
+
+    <circle cx="85" cy="522" r="12" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+    <text x="85" y="526" text-anchor="middle" fill="#047857" font-weight="600" font-size="11">6</text>
+    <text x="106" y="526" fill="#374151">Execute</text>
   </g>
 </svg>
