@@ -44,7 +44,7 @@
     <!-- Step 3 -->
     <circle cx="85" cy="250" r="14" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
     <text x="85" y="255" text-anchor="middle" fill="#1d4ed8" font-weight="600" font-size="12">3</text>
-    <text x="110" y="255" fill="#374151">determine_tools_for_model()</text>
+    <text x="110" y="255" fill="#374151">Prepare tools for model</text>
     
     <!-- Returns badge -->
     <rect x="130" y="270" width="180" height="26" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
